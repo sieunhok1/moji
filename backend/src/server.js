@@ -11,7 +11,9 @@ const PORT = process.env.PORT || 5001;
 //middlewares
 app.use(express.json());
 
+//public router
 app.use("/api/auth", api);
+//prive router
 
 connectDB().then(() => {
   app.listen(PORT, () => {

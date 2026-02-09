@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuthStore } from "../../stores/useAuthStore";
+import { useNavigate } from "react-router";
 
 const signUpSchema = z.object({
   lastname: z.string().min(1, "Họ không được để trống"),
@@ -26,13 +28,20 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { signUp } = useAuthStore();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SignUpFormValues>({ resolver: zodResolver(signUpSchema) });
 
-  const onSubmit = async (data: SignUpFormValues) => {};
+  const onSubmit = async (data: SignUpFormValues) => {
+    const { username, password, email, lastname, firstname } = data;
+    await signUp(username, password, email, lastname, firstname);
+
+    navigate("/signin");
+  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0 border-border">

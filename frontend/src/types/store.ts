@@ -12,4 +12,6 @@ export interface AuthState {
     lastName: string,
     firstName: string,
   ) => Promise<void>;
+
+  signIn: (username: string, password: string) => Promise<void>;
 }

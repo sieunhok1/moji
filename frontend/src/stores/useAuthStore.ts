@@ -28,7 +28,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       set({ loading: true });
 
-      await authService.signIn(username, password);
+      const { accessToken } = await authService.signIn(username, password);
+      set({ accessToken });
       toast.success("Đăng nhập thành công");
     } catch (error) {
       console.error(error);

@@ -8,6 +8,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   loading: false,
 
+  clearState: () => set({ accessToken: null, user: null, loading: false }),
+
   signUp: async (username, password, email, lastName, firstName) => {
     try {
       set({ loading: true });
@@ -31,6 +33,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch (error) {
       console.error(error);
       toast.error("Đăng nhập thất bại");
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  signOut: async () => {
+    try {
+      set({ loading: true });
+      get().clearState();
+      await authService.signOut();
+      toast.success("Đăng xuất thành công");
+    } catch (error) {
+      console.error(error);
+      toast.error("Đăng xuất thất bại");
     } finally {
       set({ loading: false });
     }
